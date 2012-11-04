@@ -45,7 +45,7 @@
                         var marker = new google.maps.Marker({
                             position: latLng,
                             title: event.name,
-                            content: "<b>This is HTML Content we use instead of the Marker Title for the mass infowindow.</b><br>"
+                            content: event.description
                         });
                         var infowindow = new google.maps.InfoWindow({
                             content: "<h4>"+event.name+"</h4><p>"+event.description+"</p><a target='_blank' href='"+event.humane_website_uri+"'>See event page</a>"
