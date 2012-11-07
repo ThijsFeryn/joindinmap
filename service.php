@@ -1,5 +1,5 @@
 <?php
-$curl = curl_init('http://api.joind.in/v2.1/events/?verbose=yes&format=json&filter=upcoming');
+$curl = curl_init('http://api.joind.in/v2.1/events/?verbose=yes&format=json&filter=upcoming&resultsperpage=200');
 curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
 $json = curl_exec($curl);
 $events = json_decode($json);
