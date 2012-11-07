@@ -72,8 +72,8 @@
                     marker.bindPopup("<h4>"+event.name+"</h4><p>"+event.description+"</p><p><a target='_blank' href='"+event.humane_website_uri+"'>See event page</a></p>");
                 }
             });
-            L.tileLayer('http://{s}.tile.cloudmade.com/e59aadf8fc094ed7b4981317c2b7c3f8/997/256/{z}/{x}/{y}.png', {
-                attribution: '',
+            L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © OpenStreetMap contributors',
                 maxZoom: 18
             }).addTo(map);
         });
