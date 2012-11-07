@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-        #map {
-            margin-top: 40px;
-            height: 100%;
+        html, body {
             width: 100%;
         }
-
-        html, body {
-            height: 100%;
+        #map {
+            margin-top: 40px;
             width: 100%;
         }
     </style>
@@ -57,8 +54,12 @@
     </div>
 </div>
 <div class="container" id="map"></div>
+
 <script>
     $(document).ready(function(){
+
+        $(document.getElementById("map")).height(document.documentElement.clientHeight-40);
+
         var map = L.map('map').setView([34.827032, -40.693359], 3);
         $.ajax({
             url:'/service.php',
