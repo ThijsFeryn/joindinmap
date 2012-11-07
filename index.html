@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-        #map_canvas {
+        #map {
             margin-top: 40px;
             height: 100%;
             width: 100%;
@@ -31,45 +31,11 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">-->
     <script src="../js/jquery.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    <script src="../js/markerclusterer.js"></script>
-    <script>
-        $(document).ready(function(){
-            $.ajax({
-                url:'/service.php',
-                dataType: 'json'
-            }).success(function(data){
-                var markers = [];
-                data.events.forEach(function(event){
-                        var latLng = new google.maps.LatLng(event.latitude,event.longitude);
-                        var marker = new google.maps.Marker({
-                            position: latLng,
-                            title: event.name,
-                            content: event.description
-                        });
-                        var infowindow = new google.maps.InfoWindow({
-                            content: "<h4>"+event.name+"</h4><p>"+event.description+"</p><a target='_blank' href='"+event.humane_website_uri+"'>See event page</a>"
-                        });
-                        google.maps.event.addListener(marker, 'click', function() {
-                            infowindow.open(marker.get('map'), marker);
-                        });
-                        markers.push(marker);
-                    }
-                );
-                var mcOptions = {
-                    infoOnClick: true,
-                    infoOnClickZoom: 7
-                };
-                var mapOptions = {
-                    zoom: 3,
-                    center: new google.maps.LatLng(34.827032, -40.693359),
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById('map_canvas'),mapOptions);
-                var markerCluster = new MarkerClusterer(map, markers, mcOptions);
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+    <![endif]-->
+    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -90,6 +56,27 @@
         </div>
     </div>
 </div>
-<div class="container" id="map_canvas"></div>
+<div class="container" id="map"></div>
+<script>
+    $(document).ready(function(){
+        var map = L.map('map').setView([34.827032, -40.693359], 3);
+        $.ajax({
+            url:'/service.php',
+            dataType: 'json'
+        }).success(function(data){
+            var markers = [];
+            data.events.forEach(function(event){
+                if(event.latitude != 0 && event.longitude !=0){
+                    var marker = L.marker([event.latitude, event.longitude],{title:event.name}).addTo(map);
+                    marker.bindPopup("<h4>"+event.name+"</h4><p>"+event.description+"</p><p><a target='_blank' href='"+event.humane_website_uri+"'>See event page</a></p>");
+                }
+            });
+            L.tileLayer('http://{s}.tile.cloudmade.com/e59aadf8fc094ed7b4981317c2b7c3f8/997/256/{z}/{x}/{y}.png', {
+                attribution: '',
+                maxZoom: 18
+            }).addTo(map);
+        });
+    });
+</script>
 </body>
 </html>
